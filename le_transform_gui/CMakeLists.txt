@@ -7,9 +7,23 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Qml Quick REQUIRED)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+qt5_add_resources(QT_RESOURCES src/main.qrc)
+add_executable(${PROJECT_NAME} src/main.cpp ${QT_RESOURCES})
+target_link_libraries(${PROJECT_NAME}
+	Qt5::Widgets
+	Qt5::Quick
+	Qt5::Qml
+  )
+install(TARGETS ${PROJECT_NAME}
+  DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -22,5 +36,7 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+
 
 ament_package()
